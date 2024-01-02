@@ -25,7 +25,7 @@ export function generateStaticParams(allPosts: Post[]) {
 // SEO信息
 export function generateSeoInfo(post: Post) {
   const { title, date, updatedDate, cover } = post;
-  const image = [`/cover?title=${post.title}`];
+  const image = [`/og?title=${post.title}`];
   if (cover) {
     image.unshift(cover);
   }
