@@ -4,11 +4,11 @@ import { generateSeoInfo, getPostFromParams } from "@/utils/posts";
 import { notFound } from "next/navigation";
 
 const PostLayout = ({ params }: { params: { slug: string[] } }) => {
-  const page = getPostFromParams(allPosts, params);
-  if (!page) {
+  const post = getPostFromParams(allPosts, params);
+  if (!post) {
     notFound();
   }
-  const seoInfo = generateSeoInfo(page);
+  const seoInfo = generateSeoInfo(post);
   return (
     <>
       <section>
@@ -20,12 +20,12 @@ const PostLayout = ({ params }: { params: { slug: string[] } }) => {
       </section>
       <div className="relative xl:grid xl:grid-cols-8 gap-8 mx-auto max-w-5xl">
         <article className="col-span-6 py-4 prose mx-auto dark:prose-invert max-w-2xl">
-          <h1 className="mb-2 py-4 leading-relaxed">{page.title}111</h1>
-          {/* {page.description && (
+          <h1 className="mb-2 py-4 leading-relaxed">{post.title}111</h1>
+          {post.desc && (
             <p className="mt-4 text-slate-700 dark:text-slate-200">
-              {page.description}
+              {post.desc}
             </p>
-          )} */}
+          )}
           <hr className="py-2 pt-2" />
           {/* <MDXComponent code={page.body.code} /> */}
           <hr />
