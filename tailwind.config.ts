@@ -8,7 +8,27 @@ const config: Config = {
   ],
   darkMode: ["class"],
   theme: {
+    colors: {
+      white: "#fff",
+      catalogue: "#474747",
+      "catalogue-line": "#444",
+      "catalogue-hover": "#888",
+    },
+    lineHeight: {
+      catalogue: "30px",
+    },
     extend: {
+      fontFamily: {
+        serif: [
+          "Iowan Old Style",
+          "Iowan",
+          "Iowan BT",
+          "Palatino Linotype",
+          "URW Palladio L",
+          "P052",
+          "serif",
+        ],
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

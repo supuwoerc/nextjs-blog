@@ -1,40 +1,87 @@
-// app/page.tsx
 import Link from "next/link";
-import { compareDesc, format, parseISO } from "date-fns";
+import { compareDesc, format, parseISO, startOfMonth } from "date-fns";
+import { zhCN } from "date-fns/locale";
 import { allPosts, Post } from "contentlayer/generated";
-
-function PostCard(post: Post) {
+import { groupBy } from "lodash-es";
+import classNames from "classnames";
+import Navigate from "./components/navigate";
+export interface PostCardProps {
+  post: Post;
+  current: boolean;
+}
+function PostCard({ post, current }: PostCardProps) {
   return (
-    <div className="mb-8">
-      <h2 className="mb-1 text-xl">
-        <Link
-          href={post.url}
-          className="text-blue-700 hover:text-blue-900 dark:text-blue-400"
-        >
-          {post.title}
-        </Link>
-      </h2>
-      <time dateTime={post.date} className="mb-2 block text-xs text-gray-600">
-        {format(parseISO(post.date), "LLLL d, yyyy")}
-      </time>
-      {/* <div
-        className="text-sm [&>*]:mb-3 [&>*:last-child]:mb-0"
-        dangerouslySetInnerHTML={{ __html: post.body.html }}
-      /> */}
+    <Link
+      href={post.url}
+      className={classNames(
+        "flex justify-between items-center text-catalogue leading-catalogue  transition-colors duration-300 dark:text-white",
+        {
+          "hover:text-catalogue-hover": !current,
+        }
+      )}
+    >
+      <p
+        className={classNames("max-w-[50%] truncate", {
+          protrude: current,
+          italic: current,
+        })}
+        title={post.title}
+      >
+        {post.title}
+      </p>
+      <hr className="border-dotted border-catalogue-line opacity-[0.25] flex-1 mx-[2px]" />
+      <time dateTime={post.date}>{format(parseISO(post.date), "MM.dd")}</time>
+    </Link>
+  );
+}
+export interface PostGroup {
+  year: string;
+  month: string;
+  posts: Post[];
+}
+function PostGroupCard(group: PostGroup) {
+  return (
+    <div className="post-group">
+      <div className="flex items-center justify-between font-bold mt-[30px] mb-[4px] mx-0">
+        <span>{group.year}</span>
+        <span>{group.month}</span>
+      </div>
+      {group.posts.length > 0
+        ? group.posts.map((post, index) => {
+            return <PostCard key={index} post={post} current={index === 0} />;
+          })
+        : null}
     </div>
   );
 }
 
 export default function Home() {
-  const posts = allPosts.sort((a, b) =>
-    compareDesc(new Date(a.date), new Date(b.date))
-  );
+  const groupRet = groupBy(allPosts, (item) => {
+    return startOfMonth(parseISO(item.date)).getTime();
+  });
+  const keysSortRet = Object.keys(groupRet).sort((a, b) => {
+    return Number(a) - Number(b);
+  });
+  const getGroupInfo = (key: string) => {
+    const val = groupRet[key];
+    const date = new Date(Number(key));
 
+    return {
+      year: format(date, "yyyy", { locale: zhCN }),
+      month: format(date, "LLLL", { locale: zhCN }),
+      posts: val.sort((a, b) =>
+        compareDesc(new Date(a.date), new Date(b.date))
+      ),
+    };
+  };
   return (
     <div className="mx-auto max-w-xl py-8">
-      {posts.map((post, idx) => (
-        <PostCard key={idx} {...post} />
-      ))}
+      <Navigate />
+      <div className="blog-roll">
+        {keysSortRet.map((item) => {
+          return <PostGroupCard key={item} {...getGroupInfo(item)} />;
+        })}
+      </div>
     </div>
   );
 }

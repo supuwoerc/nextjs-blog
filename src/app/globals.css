@@ -1,3 +1,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --background: white;
+  --foreground: black;
+  --link-protrude: #fff7b1;
+  --link-protrude-bold: #ffee50;
+}
+
+:root.dark {
+  --background: black;
+  --foreground: white;
+  --link-protrude: #808080;
+  --link-protrude-bold: #c0c0c0;
+}
+
+* {
+  font-feature-settings: "liga";
+}
+a {
+  font-size: 14px;
+  user-select: none;
+}
+.protrude {
+  text-decoration: underline;
+  text-decoration-color: var(--link-protrude);
+  text-decoration-skip-ink: none;
+  text-decoration-thickness: 0.5em;
+  text-underline-offset: -0.25em;
+  transition: text-decoration .3s;
+  &:hover {
+    text-decoration-color: var(--link-protrude-bold);
+  }
+}
