@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ThemeModeProvider } from "./providers";
-import "./globals.css";
 import { siteConfig } from "@/config";
+import classNames from "classnames";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: siteConfig.title,
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
   keywords: siteConfig.keywords,
 };
 
-const fonts = localFont({
+export const fonts = localFont({
   src: [
     {
       path: "../../public/fonts/IowanOldStyle/IowanOldStyleBTBold.woff2",
@@ -29,8 +30,8 @@ const fonts = localFont({
       weight: "400",
     },
   ],
+  variable: "--en-font",
 });
-
 export default function RootLayout({
   children,
 }: {
@@ -38,7 +39,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-CN" suppressHydrationWarning={true}>
-      <body className={fonts.className} suppressHydrationWarning={true}>
+      <body
+        className={classNames("common-font",fonts.variable)}
+        suppressHydrationWarning={true}
+      >
         <ThemeModeProvider>{children}</ThemeModeProvider>
       </body>
     </html>

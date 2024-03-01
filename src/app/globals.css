@@ -19,6 +19,10 @@
 * {
   font-feature-settings: "liga";
 }
+.common-font {
+  font-family: var(--en-font), "Palatino Linotype", "URW Palladio L", P052,
+    serif;
+}
 a {
   font-size: 14px;
   user-select: none;
@@ -29,7 +33,7 @@ a {
   text-decoration-skip-ink: none;
   text-decoration-thickness: 0.5em;
   text-underline-offset: -0.25em;
-  transition: text-decoration .3s;
+  transition: text-decoration 0.3s;
   &:hover {
     text-decoration-color: var(--link-protrude-bold);
   }

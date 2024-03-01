@@ -14,7 +14,9 @@ function PostCard({ post, current }: PostCardProps) {
     <Link
       href={post.url}
       className={classNames(
-        "flex justify-between items-center text-catalogue leading-catalogue  transition-colors duration-300 dark:text-white",
+        "flex justify-between items-center",
+        "text-catalogue leading-catalogue  transition-colors duration-300 dark:text-white ",
+        "text-[clamp(14px,2vw,16px)]",
         {
           "hover:text-catalogue-hover": !current,
         }
@@ -29,7 +31,7 @@ function PostCard({ post, current }: PostCardProps) {
       >
         {post.title}
       </p>
-      <hr className="border-dotted border-catalogue-line opacity-[0.25] flex-1 mx-[2px]" />
+      <hr className="border-dotted border-catalogue-line opacity-[0.25] flex-1 mx-[2px]  dark:border-d-catalogue-line" />
       <time dateTime={post.date}>{format(parseISO(post.date), "MM.dd")}</time>
     </Link>
   );
@@ -42,7 +44,7 @@ export interface PostGroup {
 function PostGroupCard(group: PostGroup) {
   return (
     <div className="post-group">
-      <div className="flex items-center justify-between font-bold mt-[30px] mb-[4px] mx-0">
+      <div className="flex items-center justify-between font-bold mt-[30px] mb-[4px] mx-0  text-[clamp(16px,1.8vw,24px)]">
         <span>{group.year}</span>
         <span>{group.month}</span>
       </div>
@@ -75,7 +77,7 @@ export default function Home() {
     };
   };
   return (
-    <div className="mx-auto max-w-xl py-8">
+    <div className="mx-auto max-w-xl py-8 px-[8px]">
       <Navigate />
       <div className="blog-roll">
         {keysSortRet.map((item) => {

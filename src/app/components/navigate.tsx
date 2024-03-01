@@ -27,7 +27,9 @@ const Navigate = () => {
   }, []);
   return (
     <div className="flex items-baseline justify-between select-none">
-      <Image src={"/imgs/logo.svg"} alt="logo" {...sizes} />
+      <Link href={"/"}>
+        <Image src={"/imgs/logo.svg"} alt="logo" {...sizes} />
+      </Link>
       <div className="flex items-center justify-between gap-[10px]">
         <Link href={""}>Post</Link>
         <Link href={""}>About</Link>

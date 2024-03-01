@@ -9,10 +9,13 @@ const config: Config = {
   darkMode: ["class"],
   theme: {
     colors: {
+      // light-mode
       white: "#fff",
       catalogue: "#474747",
       "catalogue-line": "#444",
       "catalogue-hover": "#888",
+      // dark-mode
+      "d-catalogue-line": "#eee",
     },
     lineHeight: {
       catalogue: "30px",
