@@ -11,6 +11,7 @@ const config: Config = {
     colors: {
       // light-mode
       white: "#fff",
+      black: "#000",
       catalogue: "#474747",
       "catalogue-line": "#444",
       "catalogue-hover": "#888",

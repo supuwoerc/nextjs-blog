@@ -3,12 +3,11 @@
 @tailwind utilities;
 
 :root {
-  --background: white;
+  --background: red;
   --foreground: black;
   --link-protrude: #fff7b1;
   --link-protrude-bold: #ffee50;
 }
-
 :root.dark {
   --background: black;
   --foreground: white;
@@ -37,4 +36,20 @@ a {
   &:hover {
     text-decoration-color: var(--link-protrude-bold);
   }
+}
+.post-group {
+  + .post-group {
+    margin-top: 20px;
+  }
+}
+@keyframes tick {
+  0% {
+    filter: blur(2px);
+  }
+  100% {
+    filter: blur(0px);
+  }
+}
+.blur-text {
+  animation: tick .6s forwards;
 }

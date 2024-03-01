@@ -1,7 +1,8 @@
-import { format, parseISO } from "date-fns";
 import { allPosts } from "contentlayer/generated";
 import { generateSeoInfo, getPostFromParams } from "@/utils/posts";
 import { notFound } from "next/navigation";
+import Navigate from "@/app/components/navigate";
+import { useMDXComponent } from "next-contentlayer/hooks";
 
 const PostLayout = ({ params }: { params: { slug: string[] } }) => {
   const post = getPostFromParams(allPosts, params);
@@ -9,6 +10,7 @@ const PostLayout = ({ params }: { params: { slug: string[] } }) => {
     notFound();
   }
   const seoInfo = generateSeoInfo(post);
+  const MDXContent = useMDXComponent(post.body.code);
   return (
     <>
       <section>
@@ -18,35 +20,20 @@ const PostLayout = ({ params }: { params: { slug: string[] } }) => {
           dangerouslySetInnerHTML={{ __html: seoInfo }}
         />
       </section>
-      <div className="relative xl:grid xl:grid-cols-8 gap-8 mx-auto max-w-5xl">
-        <article className="col-span-6 py-4 prose mx-auto dark:prose-invert max-w-2xl">
-          <h1 className="mb-2 py-4 leading-relaxed">{post.title}111</h1>
-          {post.desc && (
-            <p className="mt-4 text-slate-700 dark:text-slate-200">
-              {post.desc}
-            </p>
-          )}
-          <hr className="py-2 pt-2" />
-          {/* <MDXComponent code={page.body.code} /> */}
-          <hr />
-          {/* <Comments /> */}
-        </article>
-        {/* <div className="col-span-2 mx-auto">
-          <div className="sticky top-0 hidden xl:block pt-12">
-            <h3 className="text-zinc-600 dark:text-zinc-300 py-4">
-              On this page11111
-            </h3>
-            {page.headings.map((heading) => {
-              return (
-                <div key={heading.text}>
-                  <TableofContent heading={heading} />
-                </div>
-              );
-            })}
+      <div className="px-[8px] w-full h-full relative overflow-y-auto">
+        <div className="mx-auto max-w-xl">
+          <div className="bg-white dark:bg-black">
+            <Navigate post={post}/>
           </div>
-        </div> */}
+          <div className="content">
+            <div className="relative mx-auto">
+              <article className="py-4 prose mx-auto dark:prose-invert text-black dark:text-white blur-text">
+                <MDXContent />
+              </article>
+            </div>
+          </div>
+        </div>
       </div>
-      {/* <ScrollTopAndComment /> */}
     </>
   );
 };

@@ -35,9 +35,9 @@ dependencies:
   react-dom:
     specifier: ^18
     version: 18.2.0(react@18.2.0)
-  reading-time:
-    specifier: ^1.5.0
-    version: 1.5.0
+  reading-time-estimator:
+    specifier: ^1.9.4
+    version: 1.9.4
   rehype-katex:
     specifier: ^6.0.3
     version: 6.0.3
@@ -4645,8 +4645,8 @@ packages:
     dependencies:
       picomatch: 2.3.1
 
-  /reading-time@1.5.0:
-    resolution: {integrity: sha512-onYyVhBNr4CmAxFsKS7bz+uTLRakypIe4R+5A824vBSkQy/hB3fZepoVEf8OVAxzLvK+H/jm9TzpI3ETSm64Kg==}
+  /reading-time-estimator@1.9.4:
+    resolution: {integrity: sha512-QQe1W0jau3ETIvX99BfLNnBC/IHXgJxy4ruli+W6CCMpDnHZvBeH/IYfh6ZfBL1BM+OYIlRCwzWc8Fd4cXtreg==}
     dev: false
 
   /reflect.getprototypeof@1.0.4:

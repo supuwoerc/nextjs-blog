@@ -4,7 +4,7 @@ import {
   makeSource,
 } from "contentlayer/source-files";
 
-import readingTime from "reading-time";
+import { readingTime } from "reading-time-estimator";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypePrettyCode from "rehype-pretty-code";
@@ -31,32 +31,13 @@ const computedFields: ComputedFields<"Post" | "Page"> = {
   },
   readingTime: {
     type: "json",
-    resolve: (doc) => readingTime(doc.body.raw, { wordsPerMinute: 500 }),
-  },
-  headings: {
-    type: "json",
-    resolve: async (doc) => {
-      const regXHeader = /\n(?<flag>#{2,6})\s+(?<content>.+)/g;
-      const headings = Array.from(doc.body.raw.matchAll(regXHeader)).map(() => {
-        // { groups }
-        // const flag = groups?.flag;
-        // const content = groups?.content;
-        // return {
-        //   level:
-        //     flag?.length == 1 ? "one" : flag?.length == 2 ? "two" : "three",
-        //   text: content,
-        //   id: content.split(" ").join("-").toLowerCase(),
-        // };
-        return "123";
-      });
-      return headings;
-    },
+    resolve: (doc) => readingTime(doc.body.raw, 200, "cn"),
   },
 };
 
 export const Post = defineDocumentType(() => ({
   name: "Post",
-  filePathPattern: `blog/**/*.md`,
+  filePathPattern: `blog/**/*.mdx`,
   contentType: "mdx",
   fields: {
     title: {
@@ -109,7 +90,7 @@ export const Post = defineDocumentType(() => ({
 
 export const Page = defineDocumentType(() => ({
   name: "Page",
-  filePathPattern: `pages/**/*.md`,
+  filePathPattern: `pages/**/*.mdx`,
   contentType: "mdx",
   fields: {
     title: {

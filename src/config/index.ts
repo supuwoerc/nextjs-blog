@@ -23,3 +23,7 @@ export const siteConfig = {
     "后端",
   ],
 };
+
+export const layerConfig = {
+  catalogueSize: 50,
+};

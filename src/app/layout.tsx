@@ -38,9 +38,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="zh-CN" suppressHydrationWarning={true}>
+    <html
+      lang="zh-CN"
+      suppressHydrationWarning={true}
+      className="w-full h-full overflow-hidden"
+    >
       <body
-        className={classNames("common-font",fonts.variable)}
+        className={classNames(
+          "common-font",
+          fonts.variable,
+          "w-full",
+          "h-full",
+          "overflow-hidden",
+          "relative",
+          "bg-white dark:bg-black"
+        )}
         suppressHydrationWarning={true}
       >
         <ThemeModeProvider>{children}</ThemeModeProvider>

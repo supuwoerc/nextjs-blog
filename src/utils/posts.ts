@@ -40,8 +40,8 @@ export function generateSeoInfo(post: Post) {
     author: [
       {
         "@type": "Person",
-        name: `${siteConfig.author}`,
-        url: `/about`,
+        name: `${siteConfig.author.name}`,
+        url: `${siteConfig.author.url}`,
       },
     ],
   };
