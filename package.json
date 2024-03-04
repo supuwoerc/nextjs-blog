@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@xterm/xterm": "^5.4.0",
     "classnames": "^2.5.1",
     "contentlayer": "^0.3.4",
     "date-fns": "^3.0.6",
