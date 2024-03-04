@@ -10,6 +10,12 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   authors: siteConfig.author,
   keywords: siteConfig.keywords,
+  openGraph: {
+    title: siteConfig.title,
+    description: siteConfig.description,
+    url: siteConfig.author.url,
+    siteName: siteConfig.title,
+  },
 };
 
 export const fonts = localFont({

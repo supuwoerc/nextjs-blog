@@ -1,6 +1,6 @@
 export const siteConfig = {
   author: {
-    url: "https://www.zhangqimeng.fun/",
+    url: "https://www.zhangqimeng.fun/about",
     name: "zhangqimeng",
   },
   email: "zhangzhouou@gmail.com",
