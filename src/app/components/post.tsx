@@ -5,7 +5,6 @@ import { compareDesc, format, parseISO, startOfMonth } from "date-fns";
 import { zhCN } from "date-fns/locale";
 import { groupBy } from "lodash-es";
 import Link from "next/link";
-import Navigate from "./navigate";
 
 export interface PostCardProps {
   post: Post;

@@ -1,5 +1,5 @@
 import { siteConfig } from "@/config";
-import { Page, Post, allPages } from "contentlayer/generated";
+import { Page, Post, } from "contentlayer/generated";
 
 // 根据参数获取文章
 export function getPostFromParams(
