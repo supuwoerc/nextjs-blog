@@ -1,3 +1,4 @@
+import React from "react";
 export interface IconTextProps {
   icon: React.ReactNode;
   text: string;

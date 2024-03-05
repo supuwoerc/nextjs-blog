@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import React from "react";
 import localFont from "next/font/local";
 import { ThemeModeProvider } from "./providers";
 import { siteConfig } from "@/config";
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   authors: siteConfig.author,
   keywords: siteConfig.keywords,
+  metadataBase: new URL(siteConfig.author.url),
   openGraph: {
     title: siteConfig.title,
     description: siteConfig.description,
@@ -18,7 +20,7 @@ export const metadata: Metadata = {
   },
 };
 
-export const fonts = localFont({
+const fonts = localFont({
   src: [
     {
       path: "../../public/fonts/IowanOldStyle/IowanOldStyleBTBold.woff2",

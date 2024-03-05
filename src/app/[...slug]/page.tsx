@@ -1,5 +1,5 @@
 import { allPosts } from "contentlayer/generated";
-import { generateSeoInfo, getPostFromParams } from "@/utils/posts";
+import { getPostFromParams } from "@/utils/posts";
 import { notFound } from "next/navigation";
 
 const PostLayout = ({ params }: { params: { slug: string[] } }) => {
@@ -7,7 +7,6 @@ const PostLayout = ({ params }: { params: { slug: string[] } }) => {
   if (!page) {
     notFound();
   }
-  const seoInfo = generateSeoInfo(page);
   return (
     <>
       <div>[slug]</div>

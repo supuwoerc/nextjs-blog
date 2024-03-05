@@ -2,7 +2,6 @@ import { getFileBuffer } from "@/utils";
 import { ImageResponse } from "next/server";
 import path from "path";
 import { siteConfig } from "@/config/index";
-import { Module } from "module";
 
 // https://www.haydenhayden.com/blog/next-og
 export async function GET(req: Request) {
@@ -33,7 +32,7 @@ export async function GET(req: Request) {
           <div
             style={{ fontSize: 30, position: "absolute", left: 32, top: 32 }}
           >
-            What's going on
+            What&apos;s going on
           </div>
           <div
             style={{

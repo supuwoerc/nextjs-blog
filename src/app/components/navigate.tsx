@@ -1,14 +1,13 @@
 "use client";
-
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Moon, Sun, Loader, Clock } from "lucide-react";
+import { Moon, Sun, Loader } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Post } from "contentlayer/generated";
 import { isUndefined } from "lodash-es";
 import classNames from "classnames";
-import IconText from "./iconText";
 
 const sizes = {
   width: 32,
@@ -28,9 +27,6 @@ const Navigate: React.FC<NavigateProps> = ({ post }) => {
   const props = {
     className: "hover:cursor-pointer w-[18px]",
     onClick: toggleTheme,
-  };
-  const descProps = {
-    className: "w-[14px]",
   };
   const isDetail = isUndefined(post);
   useEffect(() => {
