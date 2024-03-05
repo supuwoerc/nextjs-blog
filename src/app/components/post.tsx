@@ -78,17 +78,10 @@ export default function Catalogue() {
     };
   };
   return (
-    <div className="px-[8px] w-full h-full relative overflow-y-auto">
-      <div className="mx-auto max-w-xl">
-        <div className="sticky top-0 py-8 pb-2 z-10 bg-white dark:bg-black">
-          <Navigate />
-        </div>
-        <div className="blog-roll">
-          {keysSortRet.map((item) => {
-            return <PostGroupCard key={item} {...getGroupInfo(item)} />;
-          })}
-        </div>
-      </div>
+    <div className="blog-roll">
+      {keysSortRet.map((item) => {
+        return <PostGroupCard key={item} {...getGroupInfo(item)} />;
+      })}
     </div>
   );
 }

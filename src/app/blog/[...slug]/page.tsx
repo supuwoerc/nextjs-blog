@@ -20,14 +20,14 @@ const PostLayout = ({ params }: { params: { slug: string[] } }) => {
           dangerouslySetInnerHTML={{ __html: seoInfo }}
         />
       </section>
-      <div className="px-[8px] w-full h-full relative overflow-y-auto">
+      <div className="w-full h-full relative overflow-y-auto blur-text">
         <div className="mx-auto max-w-xl">
           <div className="bg-white dark:bg-black">
             <Navigate post={post}/>
           </div>
           <div className="content">
             <div className="relative mx-auto">
-              <article className="py-4 prose mx-auto dark:prose-invert text-black dark:text-white blur-text">
+              <article className="py-4 prose mx-auto dark:prose-invert text-black dark:text-white">
                 <MDXContent />
               </article>
             </div>

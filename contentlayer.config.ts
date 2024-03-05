@@ -97,8 +97,21 @@ export const Page = defineDocumentType(() => ({
       type: "string",
       required: true,
     },
-    description: {
+    desc: {
       type: "string",
+      required: false,
+    },
+    date: {
+      type: "date",
+      required: true,
+    },
+    updatedDate: {
+      type: "date",
+      required: false,
+    },
+    cover: {
+      type: "string",
+      default: "",
     },
   },
   computedFields,

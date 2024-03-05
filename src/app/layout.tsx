@@ -5,6 +5,7 @@ import { ThemeModeProvider } from "./providers";
 import { siteConfig } from "@/config";
 import classNames from "classnames";
 import "./globals.css";
+import Navigate from "./components/navigate";
 
 export const metadata: Metadata = {
   title: siteConfig.title,
@@ -63,7 +64,40 @@ export default function RootLayout({
         )}
         suppressHydrationWarning={true}
       >
-        <ThemeModeProvider>{children}</ThemeModeProvider>
+        <ThemeModeProvider>
+          <div className="px-[8px] w-full h-full relative overflow-y-auto blur-text">
+            <div className="mx-auto max-w-xl">
+              <div className="sticky top-0 py-8 pb-4 z-10 bg-white dark:bg-black">
+                <Navigate />
+              </div>
+              <main>{children}</main>
+            </div>
+          </div>
+        </ThemeModeProvider>
+        <svg
+          xmlns="//www.w3.org/2000/svg"
+          version="1.1"
+          className="svg-filters"
+          style={{ display: "none" }}
+        >
+          <defs>
+            <filter id="marker-shape">
+              <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0 0.15"
+                numOctaves="1"
+                result="warp"
+              />
+              <feDisplacementMap
+                xChannelSelector="R"
+                yChannelSelector="G"
+                scale="30"
+                in="SourceGraphic"
+                in2="warp"
+              />
+            </filter>
+          </defs>
+        </svg>
       </body>
     </html>
   );

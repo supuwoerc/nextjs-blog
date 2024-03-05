@@ -8,13 +8,16 @@ import { ImageAddon, IImageAddonOptions } from "@xterm/addon-image";
 import { WebLinksAddon } from "@xterm/addon-web-links";
 import { allPosts } from "contentlayer/generated";
 import { siteConfig } from "@/config";
+import { useRouter } from "next/navigation";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const message = [
   "$ \x1b[31;1m404 Not Found - \x1b[1m访问路径不存在\x1b[0m",
   "",
   "$ \x1b[31;1m试试点击下面的其他路径~\x1b[0m",
   "",
-  "$ \x1b[33mPost-博客\x1b[0m \x1b[36mAbout-关于作者\x1b[0m",
+  `$ \x1b]8;;${siteConfig.navigate.post}\x1b\\Post-博客\x1b]8;;\x1b\\ \x1b]8;;${siteConfig.navigate.about}\x1b\\About-关于作者\x1b]8;;\x1b\\`,
+  "",
 ].join("\n\r");
 const customSettings: IImageAddonOptions = {
   enableSizeReports: true, // whether to enable CSI t reports (see below)
@@ -69,6 +72,12 @@ const commands: Record<string, any> = {
       prompt(term);
     },
     description: "查看全部文章列表",
+  },
+  [".."]: {
+    f: (_t: Terminal, router: AppRouterInstance) => {
+      router.replace("/");
+    },
+    description: "回到首页",
   },
   clear: {
     f: (term: Terminal) => {
@@ -129,12 +138,16 @@ const commands: Record<string, any> = {
     description: "查看帮助信息",
   },
 };
-function runCommand(terminal: Terminal, command: string) {
+function runCommand(
+  terminal: Terminal,
+  command: string,
+  router: AppRouterInstance
+) {
   const cmd = command.trim().split(" ")[0];
   if (cmd.length > 0) {
     terminal.writeln("");
     if (command.toLocaleLowerCase() in commands) {
-      commands[command.toLocaleLowerCase()].f(terminal);
+      commands[command.toLocaleLowerCase()].f(terminal, router);
       return;
     }
     terminal.writeln(`${command}: command not found - 未发现指令`);
@@ -150,6 +163,7 @@ const TerminalComponent: React.FC<TerminalComponentProps> = ({
   const terminalRef = useRef<HTMLDivElement>(null);
   const terminal = useRef<Terminal | null>(null);
   const fitAddon = useRef(new FitAddon());
+  const router = useRouter();
   const initTerminal = useCallback(() => {
     terminal.current = new Terminal({
       convertEol: true, //启用时，光标将设置为下一行的开头
@@ -161,6 +175,11 @@ const TerminalComponent: React.FC<TerminalComponentProps> = ({
       fontSize: 14,
       theme: baseTheme,
       allowProposedApi: true,
+      linkHandler: {
+        activate: (_event: MouseEvent, text: string) => {
+          router.push(text);
+        },
+      },
     });
     const imageAddon = new ImageAddon(customSettings);
     const term = terminal.current;
@@ -181,7 +200,7 @@ const TerminalComponent: React.FC<TerminalComponentProps> = ({
           prompt(term);
           break;
         case "\r": // Enter
-          runCommand(term, command);
+          runCommand(term, command, router);
           command = "";
           break;
         case "\u007F": // Backspace (DEL)
@@ -222,8 +241,8 @@ const TerminalComponent: React.FC<TerminalComponentProps> = ({
     };
   }, [initTerminal]);
   return (
-    <div className="px-[8px] w-full h-full relative overflow-y-auto flex items-center justify-center">
-      <div className="mx-auto max-w-xl px-[8px] py-[8px] bg-[#2D2E2C] rounded-md">
+    <div className="w-full h-full relative overflow-y-auto flex items-center justify-center bg-[#2D2E2C] rounded-md blur-text">
+      <div className="mx-auto max-w-xl px-[8px] py-[8px]">
         <div ref={terminalRef} className="w-full h-full"></div>
       </div>
     </div>
