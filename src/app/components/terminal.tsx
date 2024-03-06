@@ -16,7 +16,7 @@ const message = [
   "",
   "$ \x1b[31;1m试试点击下面的其他路径~\x1b[0m",
   "",
-  `$ \x1b]8;;${siteConfig.navigate.post}\x1b\\Post-博客\x1b]8;;\x1b\\ \x1b]8;;${siteConfig.navigate.about}\x1b\\About-关于作者\x1b]8;;\x1b\\`,
+  `$ \x1b]8;;${siteConfig.navigate.blog}\x1b\\Blog-博客\x1b]8;;\x1b\\ \x1b]8;;${siteConfig.navigate.about}\x1b\\About-关于作者\x1b]8;;\x1b\\`,
   "",
 ].join("\n\r");
 const customSettings: IImageAddonOptions = {
@@ -223,7 +223,7 @@ const TerminalComponent: React.FC<TerminalComponentProps> = ({
           }
       }
     });
-  }, [initMessage]);
+  }, [initMessage, router]);
   useEffect(() => {
     initTerminal();
     const fitAddonRef = fitAddon.current;
@@ -241,6 +241,7 @@ const TerminalComponent: React.FC<TerminalComponentProps> = ({
     };
   }, [initTerminal]);
   return (
+    // TODO:修复resize样式
     <div className="w-full h-full relative overflow-y-auto flex items-center justify-center bg-[#2D2E2C] rounded-md blur-text">
       <div className="mx-auto max-w-xl px-[8px] py-[8px]">
         <div ref={terminalRef} className="w-full h-full"></div>

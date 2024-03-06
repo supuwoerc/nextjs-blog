@@ -8,7 +8,7 @@ export const siteConfig = {
   title: "怎么个事？",
   description: "使用nextjs构建的个人技术博客",
   navigate: {
-    post: "https://www.zhangqimeng.fun/post",
+    blog: "https://www.zhangqimeng.fun/blog",
     about: "https://www.zhangqimeng.fun/about",
   },
   keywords: [
