@@ -1,24 +1,24 @@
-"use client";
-import { ITheme, Terminal } from "@xterm/xterm";
-import React, { useCallback, useEffect, useRef } from "react";
-import { CanvasAddon } from "@xterm/addon-canvas";
-import "@xterm/xterm/css/xterm.css";
-import { FitAddon } from "@xterm/addon-fit";
-import { ImageAddon, IImageAddonOptions } from "@xterm/addon-image";
-import { WebLinksAddon } from "@xterm/addon-web-links";
-import { allPosts } from "contentlayer/generated";
-import { siteConfig } from "@/config";
-import { useRouter } from "next/navigation";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+'use client';
+import { siteConfig } from '@/config';
+import { FitAddon } from '@xterm/addon-fit';
+import { IImageAddonOptions, ImageAddon } from '@xterm/addon-image';
+import { WebLinksAddon } from '@xterm/addon-web-links';
+import { WebglAddon } from '@xterm/addon-webgl';
+import { ITheme, Terminal } from '@xterm/xterm';
+import '@xterm/xterm/css/xterm.css';
+import { allPosts } from 'contentlayer/generated';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { useRouter } from 'next/navigation';
+import React, { useCallback, useEffect, useRef } from 'react';
 
 const message = [
-  "$ \x1b[31;1m404 Not Found - \x1b[1m访问路径不存在\x1b[0m",
-  "",
-  "$ \x1b[31;1m试试点击下面的其他路径~\x1b[0m",
-  "",
+  '$ \x1b[31;1m404 Not Found - \x1b[1m访问路径不存在\x1b[0m',
+  '',
+  '$ \x1b[31;1m试试点击下面的其他路径~\x1b[0m',
+  '',
   `$ \x1b]8;;${siteConfig.navigate.blog}\x1b\\Blog-博客\x1b]8;;\x1b\\ \x1b]8;;${siteConfig.navigate.about}\x1b\\About-关于作者\x1b]8;;\x1b\\`,
-  "",
-].join("\n\r");
+  '',
+].join('\n\r');
 const customSettings: IImageAddonOptions = {
   enableSizeReports: true, // whether to enable CSI t reports (see below)
   pixelLimit: 16777216, // max. pixel size of a single image
@@ -32,27 +32,27 @@ const customSettings: IImageAddonOptions = {
   iipSizeLimit: 20000000, // size limit of a single IIP sequence
 };
 const baseTheme: ITheme = {
-  foreground: "#F8F8F8",
-  background: "#2D2E2C",
-  black: "#1E1E1D",
-  brightBlack: "#262625",
-  red: "#CE5C5C",
-  brightRed: "#FF7272",
-  green: "#5BCC5B",
-  brightGreen: "#72FF72",
-  yellow: "#CCCC5B",
-  brightYellow: "#FFFF72",
-  blue: "#5D5DD3",
-  brightBlue: "#7279FF",
-  magenta: "#BC5ED1",
-  brightMagenta: "#E572FF",
-  cyan: "#5DA5D5",
-  brightCyan: "#72F0FF",
-  white: "#F8F8F8",
-  brightWhite: "#FFFFFF",
+  foreground: '#F8F8F8',
+  background: '#2D2E2C',
+  black: '#1E1E1D',
+  brightBlack: '#262625',
+  red: '#CE5C5C',
+  brightRed: '#FF7272',
+  green: '#5BCC5B',
+  brightGreen: '#72FF72',
+  yellow: '#CCCC5B',
+  brightYellow: '#FFFF72',
+  blue: '#5D5DD3',
+  brightBlue: '#7279FF',
+  magenta: '#BC5ED1',
+  brightMagenta: '#E572FF',
+  cyan: '#5DA5D5',
+  brightCyan: '#72F0FF',
+  white: '#F8F8F8',
+  brightWhite: '#FFFFFF',
 };
 function prompt(terminal: Terminal) {
-  terminal.write("\r\n$ ");
+  terminal.write('\r\n$ ');
 }
 const commands: Record<string, any> = {
   ls: {
@@ -62,29 +62,29 @@ const commands: Record<string, any> = {
         allPosts
           .map((item, index) => {
             return [
-              "",
+              '',
               `${colors[index % colors.length]} ${item.title}\x1b[0m`,
             ];
           })
           .flat(1)
-          .join("\r\n")
+          .join('\r\n')
       );
       prompt(term);
     },
-    description: "查看全部文章列表",
+    description: '查看全部文章列表',
   },
-  [".."]: {
+  ['..']: {
     f: (_t: Terminal, router: AppRouterInstance) => {
-      router.replace("/");
+      router.replace('/');
     },
-    description: "回到首页",
+    description: '回到首页',
   },
   clear: {
     f: (term: Terminal) => {
-      term.write("\x1b[2J\x1b[3J\x1b[H");
+      term.write('\x1b[2J\x1b[3J\x1b[H');
       prompt(term);
     },
-    description: "清空全部输出",
+    description: '清空全部输出',
   },
   help: {
     f: (term: Terminal) => {
@@ -99,16 +99,16 @@ const commands: Record<string, any> = {
           // Check if the remaining text fits
           if (remaining.length < maxLength) {
             d.push(remaining);
-            remaining = "";
+            remaining = '';
           } else {
             let splitIndex = -1;
             // Check if the remaining line wraps already
-            if (remaining[maxLength] === " ") {
+            if (remaining[maxLength] === ' ') {
               splitIndex = maxLength;
             } else {
               // Find the last space to use as the split index
               for (let i = maxLength - 1; i >= 0; i--) {
-                if (remaining[i] === " ") {
+                if (remaining[i] === ' ') {
                   splitIndex = i;
                   break;
                 }
@@ -120,22 +120,22 @@ const commands: Record<string, any> = {
         }
         const message =
           `  \x1b[36;1m${name.padEnd(padding)}\x1b[0m ${d[0]}` +
-          d.slice(1).map((e) => `\r\n  ${" ".repeat(padding)} ${e}`);
+          d.slice(1).map((e) => `\r\n  ${' '.repeat(padding)} ${e}`);
         return message;
       }
       term.writeln(
         [
-          "",
+          '',
           `欢迎来到${siteConfig.domain}! 试试下面的指令～`,
-          "",
+          '',
           ...Object.keys(commands).map((e) =>
             formatMessage(e, commands[e].description)
           ),
-        ].join("\n\r")
+        ].join('\n\r')
       );
       prompt(term);
     },
-    description: "查看帮助信息",
+    description: '查看帮助信息',
   },
 };
 function runCommand(
@@ -143,9 +143,9 @@ function runCommand(
   command: string,
   router: AppRouterInstance
 ) {
-  const cmd = command.trim().split(" ")[0];
+  const cmd = command.trim().split(' ')[0];
   if (cmd.length > 0) {
-    terminal.writeln("");
+    terminal.writeln('');
     if (command.toLocaleLowerCase() in commands) {
       commands[command.toLocaleLowerCase()].f(terminal, router);
       return;
@@ -169,7 +169,7 @@ const TerminalComponent: React.FC<TerminalComponentProps> = ({
       convertEol: true, //启用时，光标将设置为下一行的开头
       scrollback: 100, //终端中的回滚量
       disableStdin: false, //是否应禁用输入。
-      cursorStyle: "bar", //光标样式
+      cursorStyle: 'bar', //光标样式
       cursorBlink: true, //光标闪烁
       tabStopWidth: 4,
       fontSize: 14,
@@ -187,26 +187,26 @@ const TerminalComponent: React.FC<TerminalComponentProps> = ({
     term.loadAddon(fitAddon.current);
     term.loadAddon(new WebLinksAddon());
     term.open(terminalRef.current!);
-    term.loadAddon(new CanvasAddon());
+    term.loadAddon(new WebglAddon());
     term.writeln(initMessage);
-    term.writeln("\r\n$ 此外你还可以输入`help`查看帮助信息");
+    term.writeln('\r\n$ 此外你还可以输入`help`查看帮助信息');
     prompt(term!);
     term.focus();
-    let command = "";
+    let command = '';
     term.onData((e) => {
       switch (e) {
-        case "\u0003": // Ctrl+C
-          term.write("^C");
+        case '\u0003': // Ctrl+C
+          term.write('^C');
           prompt(term);
           break;
-        case "\r": // Enter
+        case '\r': // Enter
           runCommand(term, command, router);
-          command = "";
+          command = '';
           break;
-        case "\u007F": // Backspace (DEL)
+        case '\u007F': // Backspace (DEL)
           // @ts-ignore
           if (term._core.buffer.x > 2) {
-            term.write("\b \b");
+            term.write('\b \b');
             if (command.length > 0) {
               command = command.substr(0, command.length - 1);
             }
@@ -216,7 +216,7 @@ const TerminalComponent: React.FC<TerminalComponentProps> = ({
           if (
             (e >= String.fromCharCode(0x20) &&
               e <= String.fromCharCode(0x7e)) ||
-            e >= "\u00a0"
+            e >= '\u00a0'
           ) {
             command += e;
             term.write(e);
@@ -233,18 +233,17 @@ const TerminalComponent: React.FC<TerminalComponentProps> = ({
     const resizeListener = () => {
       fitAddonRef.fit();
     };
-    window.addEventListener("resize", resizeListener);
+    window.addEventListener('resize', resizeListener);
     return () => {
-      window.removeEventListener("resize", resizeListener);
+      window.removeEventListener('resize', resizeListener);
       fitAddonRef.dispose();
       terminal.current?.dispose();
     };
   }, [initTerminal]);
   return (
-    // TODO:修复resize样式
-    <div className="w-full h-full relative overflow-y-auto flex items-center justify-center bg-[#2D2E2C] rounded-md blur-text">
-      <div className="mx-auto max-w-xl px-[8px] py-[8px]">
-        <div ref={terminalRef} className="w-full h-full"></div>
+    <div className="blur-text relative mt-[10vh] h-full w-full rounded-md bg-[#2D2E2C]">
+      <div className="h-full w-full px-[8px] py-[8px]">
+        <div ref={terminalRef} className="h-full w-full"></div>
       </div>
     </div>
   );
