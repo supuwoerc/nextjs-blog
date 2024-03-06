@@ -1,8 +1,38 @@
-import { allPosts } from "contentlayer/generated";
-import { generateSeoInfo, getPostFromParams } from "@/utils/posts";
-import { notFound } from "next/navigation";
-import Navigate from "@/app/components/navigate";
-import { useMDXComponent } from "next-contentlayer/hooks";
+import Navigate from '@/app/components/navigate';
+import { siteConfig } from '@/config';
+import { generateSeoInfo, getPostFromParams } from '@/utils/posts';
+import { allPosts } from 'contentlayer/generated';
+import { useMDXComponent } from 'next-contentlayer/hooks';
+import { notFound } from 'next/navigation';
+
+export function generateStaticParams() {
+  return allPosts.map((post) => ({
+    slug: post.slugAsParams.split('/'),
+  }));
+}
+
+export function generateMetadata({ params }: { params: { slug: string[] } }) {
+  const post = getPostFromParams(allPosts, params);
+  if (!post) {
+    return {};
+  }
+  return {
+    title: `${post.title} - ${siteConfig.title}`,
+    description: post.desc || siteConfig.description,
+    openGraph: {
+      title: `${post.title} from ${siteConfig.title}`,
+      description: post.desc || siteConfig.description,
+      url: '/' + post.slugAsParams,
+      siteName: siteConfig.title,
+      type: 'website',
+      images: [
+        {
+          url: `/og?title=${post.title}`,
+        },
+      ],
+    },
+  };
+}
 
 const PostLayout = ({ params }: { params: { slug: string[] } }) => {
   const post = getPostFromParams(allPosts, params);
@@ -20,14 +50,14 @@ const PostLayout = ({ params }: { params: { slug: string[] } }) => {
           dangerouslySetInnerHTML={{ __html: seoInfo }}
         />
       </section>
-      <div className="w-full h-full relative overflow-y-auto blur-text">
+      <div className="blur-text relative h-full w-full overflow-y-auto">
         <div className="mx-auto max-w-xl">
           <div className="bg-white dark:bg-black">
-            <Navigate post={post}/>
+            <Navigate post={post} />
           </div>
           <div className="content">
             <div className="relative mx-auto">
-              <article className="py-4 prose mx-auto dark:prose-invert text-black dark:text-white">
+              <article className="prose mx-auto py-4 text-black dark:prose-invert dark:text-white">
                 <MDXContent />
               </article>
             </div>

@@ -1,12 +1,12 @@
-import { siteConfig } from "@/config";
-import { Page, Post, } from "contentlayer/generated";
+import { siteConfig } from '@/config';
+import { Page, Post } from 'contentlayer/generated';
 
 // 根据参数获取文章
 export function getPostFromParams(
   allPosts: Post[],
   params: Record<string, any>
 ) {
-  const slug = params?.slug?.join("/");
+  const slug = params?.slug?.join('/');
   const post = allPosts.find((post) => post.slugAsParams === slug);
 
   if (!post) {
@@ -20,19 +20,12 @@ export function getPageFromParams(
   allPages: Page[],
   params: Record<string, any>
 ) {
-  const slug = params?.slug?.join("/");
+  const slug = params?.slug?.join('/');
   const page = allPages.find((post) => post.slugAsParams === slug);
   if (!page) {
     null;
   }
   return page;
-}
-
-// 映射slug
-export function generateStaticParams(allPosts: Post[]) {
-  return allPosts.map((post) => ({
-    slug: post.slugAsParams.split("/"),
-  }));
 }
 
 // SEO信息
@@ -43,8 +36,8 @@ export function generateSeoInfo(post: Post | Page) {
     image.unshift(cover);
   }
   const info = {
-    "@context": "https://schema.org",
-    "@type": "Article",
+    '@context': 'https://schema.org',
+    '@type': 'Article',
     datePublished: date,
     dateModified: updatedDate,
     headline: title,
@@ -52,7 +45,7 @@ export function generateSeoInfo(post: Post | Page) {
     description: post.desc,
     author: [
       {
-        "@type": "Person",
+        '@type': 'Person',
         name: `${siteConfig.author.name}`,
         url: `${siteConfig.author.url}`,
       },
