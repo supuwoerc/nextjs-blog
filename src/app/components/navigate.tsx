@@ -1,14 +1,13 @@
-"use client";
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { Moon, Sun, Loader } from "lucide-react";
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
-import { Post } from "contentlayer/generated";
-import { isUndefined } from "lodash-es";
-import classNames from "classnames";
-import { usePathname } from "next/navigation";
+'use client';
+import classNames from 'classnames';
+import { Post } from 'contentlayer/generated';
+import { isUndefined } from 'lodash-es';
+import { Loader } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import SwitchTheme from './switchTheme';
 
 const sizes = {
   width: 32,
@@ -18,22 +17,16 @@ export interface NavigateProps {
   post?: Post;
 }
 const nav = [
-  { path: "/", name: "Home" },
-  { path: "/blog", name: "Blog" },
-  { path: "/about", name: "About" },
+  { path: '/', name: 'Home' },
+  { path: '/blog', name: 'Blog' },
+  { path: '/about', name: 'About' },
 ];
 const Navigate: React.FC<NavigateProps> = ({ post }) => {
   // https://github.com/pacocoursey/next-themes#avoid-hydration-mismatch
   const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
   const pathname = usePathname();
-  const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
-  const isDarkMode = theme === "dark";
   const props = {
-    className: "hover:cursor-pointer w-[18px]",
-    onClick: toggleTheme,
+    className: 'hover:cursor-pointer w-[18px]',
   };
   const isDetail = isUndefined(post);
   useEffect(() => {
@@ -41,14 +34,14 @@ const Navigate: React.FC<NavigateProps> = ({ post }) => {
   }, []);
   return (
     <div
-      className={classNames("select-none", {
-        "flex items-baseline justify-between": isDetail,
+      className={classNames('select-none', {
+        'flex items-baseline justify-between': isDetail,
       })}
     >
       {isDetail ? (
         <>
-          <Link href={"/"}>
-            <Image src={"/imgs/logo.svg"} alt="logo" {...sizes} />
+          <Link href={'/'}>
+            <Image src={'/imgs/logo.svg'} alt="logo" {...sizes} />
           </Link>
           <div className="flex items-center justify-between gap-[12px]">
             {nav.map(({ path, name }) => {
@@ -57,9 +50,9 @@ const Navigate: React.FC<NavigateProps> = ({ post }) => {
                   key={name}
                   href={path}
                   className={classNames(
-                    "transition-colors duration-300 dark:text-white ",
+                    'transition-colors duration-300 dark:text-white ',
                     {
-                      "realistic-marker-highlight": path === pathname,
+                      'realistic-marker-highlight': path === pathname,
                     }
                   )}
                 >
@@ -67,15 +60,7 @@ const Navigate: React.FC<NavigateProps> = ({ post }) => {
                 </Link>
               );
             })}
-            {mounted ? (
-              isDarkMode ? (
-                <Moon {...props} />
-              ) : (
-                <Sun {...props} />
-              )
-            ) : (
-              <Loader className={props.className} />
-            )}
+            {mounted ? <SwitchTheme /> : <Loader className={props.className} />}
           </div>
         </>
       ) : (

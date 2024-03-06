@@ -69,3 +69,17 @@ a {
   top: 0.2em;
   padding: 0;
 }
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+  display: block;
+}
+
+::view-transition-old(root) {
+  z-index: 999;
+}
+.dark::view-transition-new(root) {
+  z-index: 999;
+}

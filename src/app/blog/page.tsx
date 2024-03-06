@@ -1,4 +1,4 @@
-import Catalogue from "../components/post";
+import Catalogue from '../components/post';
 
 export default function BlogPage() {
   return (
