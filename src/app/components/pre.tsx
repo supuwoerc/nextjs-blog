@@ -57,7 +57,7 @@ const CopyButton: React.FC<CopyButtonProps> = ({
         setVisible(false);
       }, duration);
     }
-  }, [visible, autoClose]);
+  }, [visible, autoClose, duration]);
   return (
     <Tippy visible={visible} placement="left" content={<span>Copied!</span>}>
       <button
