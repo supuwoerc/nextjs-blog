@@ -42,7 +42,12 @@ const Navigate: React.FC<NavigateProps> = ({ post }) => {
       {isDetail ? (
         <>
           <Link href={'/'}>
-            <Image src={'/imgs/logo.svg'} alt="logo" {...sizes} />
+            <Image
+              src={'/imgs/logo.svg'}
+              alt="logo"
+              {...sizes}
+              priority={true}
+            />
           </Link>
           <div className="flex items-center justify-between gap-[12px]">
             {nav.map(({ path, name }) => {

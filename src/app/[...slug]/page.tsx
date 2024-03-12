@@ -55,6 +55,12 @@ const PageLayout = ({ params }: { params: { slug: string[] } }) => {
         <div className="mx-auto max-w-xl">
           <div className="relative mx-auto">
             <article className="prose mx-auto py-4 text-black dark:prose-invert dark:text-white">
+              <h2 className="pt-2 text-center">{page.title}</h2>
+              {page.desc && (
+                <p className="text-slate-700 dark:text-slate-200 mt-4">
+                  {page.desc}
+                </p>
+              )}
               <MDXContent />
             </article>
           </div>
