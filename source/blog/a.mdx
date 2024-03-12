@@ -28,3 +28,11 @@ Josh is rightfully complaining about the state of the web, specifically the mobi
 His whole point is that search engines are not the best way to surface information. You search for something, you’re presented with a list of links, and you have to click through them and actively look for the thing you were searching for. The proposed solution is AI—who would have thought—that essentially googles for you, “reads” a bunch of the links, and then creates a summary page.
 
 All this is obviously done by stripping away all the tracking and ads that are part of today’s web.
+
+```typescript showLineNumbers {2-3,4} title="代码示例"  
+export type trackingConfig = {
+    handlers: Handlers
+    routerMode?: 'history' | 'hash' | 'history' | 'hash'|'history' | 'hash'|'history' | 'hash'
+    trackMap?: TrackMap //埋点映射
+}
+```

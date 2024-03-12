@@ -1,4 +1,5 @@
 import Navigate from '@/app/components/navigate';
+import Pre from '@/app/components/pre';
 import { siteConfig } from '@/config';
 import { generateSeoInfo, getPostFromParams } from '@/utils/posts';
 import { allPosts } from 'contentlayer/generated';
@@ -58,7 +59,11 @@ const PostLayout = ({ params }: { params: { slug: string[] } }) => {
           <div className="content">
             <div className="relative mx-auto">
               <article className="prose mx-auto py-4 text-black dark:prose-invert dark:text-white">
-                <MDXContent />
+                <MDXContent
+                  components={{
+                    pre: Pre,
+                  }}
+                />
               </article>
             </div>
           </div>

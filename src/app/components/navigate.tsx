@@ -26,7 +26,8 @@ const Navigate: React.FC<NavigateProps> = ({ post }) => {
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const props = {
-    className: 'hover:cursor-pointer w-[18px]',
+    className: 'hover:cursor-pointer',
+    size: 18,
   };
   const isDetail = isUndefined(post);
   useEffect(() => {
@@ -60,7 +61,7 @@ const Navigate: React.FC<NavigateProps> = ({ post }) => {
                 </Link>
               );
             })}
-            {mounted ? <SwitchTheme /> : <Loader className={props.className} />}
+            {mounted ? <SwitchTheme /> : <Loader {...props} />}
           </div>
         </>
       ) : (

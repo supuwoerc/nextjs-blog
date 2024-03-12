@@ -46,7 +46,8 @@ export default function SwitchTheme() {
     });
   };
   const props = {
-    className: 'hover:cursor-pointer w-[18px]',
+    className: 'hover:cursor-pointer',
+    size: 18,
   };
   return (
     <button className="p-1" onClick={onClick}>

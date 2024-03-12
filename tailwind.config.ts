@@ -1,69 +1,70 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  darkMode: ["class"],
+  darkMode: ['class'],
   theme: {
     colors: {
+      success: '#57ab5a',
       // light-mode
-      white: "#fff",
-      black: "#000",
-      catalogue: "#474747",
-      "catalogue-line": "#444",
-      "catalogue-hover": "#888",
+      white: '#fff',
+      black: '#000',
+      catalogue: '#474747',
+      'catalogue-line': '#444',
+      'catalogue-hover': '#888',
       // dark-mode
-      "d-catalogue-line": "#eee",
+      'd-catalogue-line': '#eee',
     },
     lineHeight: {
-      catalogue: "30px",
+      catalogue: '30px',
     },
     extend: {
       fontFamily: {
         serif: [
-          "Iowan Old Style",
-          "Iowan",
-          "Iowan BT",
-          "Palatino Linotype",
-          "URW Palladio L",
-          "P052",
-          "serif",
+          'Iowan Old Style',
+          'Iowan',
+          'Iowan BT',
+          'Palatino Linotype',
+          'URW Palladio L',
+          'P052',
+          'serif',
         ],
       },
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic':
+          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       typography: (theme: any) => ({
         DEFAULT: {
           css: {
-            lineHeight: "2rem",
+            lineHeight: '2rem',
             a: {
-              textDecoration: "none",
-              color: theme("colors.zinc.800"),
-              "font-weight": "600",
-              "&:hover": {
-                color: theme("colors.zinc.900"),
-                textDecoration: "underline",
+              textDecoration: 'none',
+              color: theme('colors.zinc.800'),
+              'font-weight': '600',
+              '&:hover': {
+                color: theme('colors.zinc.900'),
+                textDecoration: 'underline',
               },
             },
             code: {
-              color: theme("colors.pink.500"),
-              paddingLeft: "4px",
-              paddingRight: "4px",
+              color: theme('colors.pink.500'),
+              paddingLeft: '4px',
+              paddingRight: '4px',
             },
           },
         },
         invert: {
           css: {
             a: {
-              color: theme("colors.zinc.300"),
-              "&:hover": {
-                color: theme("colors.zinc.200"),
+              color: theme('colors.zinc.300'),
+              '&:hover': {
+                color: theme('colors.zinc.200'),
               },
             },
           },
@@ -71,6 +72,6 @@ const config: Config = {
       }),
     },
   },
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [require('@tailwindcss/typography'), require('tailwind-scrollbar')],
 };
 export default config;

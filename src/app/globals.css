@@ -7,12 +7,20 @@
   --foreground: black;
   --link-protrude: #fff7b1;
   --link-protrude-bold: #ffee50;
+  --success: #57ab5a;
 }
 :root.dark {
   --background: black;
   --foreground: white;
   --link-protrude: #808080;
   --link-protrude-bold: #c0c0c0;
+  --success: #57ab5a;
+}
+:root.light *[data-theme='dark'] {
+  display: none;
+}
+:root.dark *[data-theme='light'] {
+  display: none;
 }
 
 * {
@@ -90,4 +98,33 @@ a {
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, and Opera */
   }
+}
+
+code span[data-highlighted-line] {
+  background-color: #57c7f933;
+  border-color: #57c7f9;
+}
+div[data-rehype-pretty-code-title] {
+  color: #fff;
+  padding: 0 4px;
+  text-align: center;
+  background: rgb(81, 81, 81);
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  font-size: 14px;
+}
+code {
+  counter-reset: line;
+}
+code > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 1rem;
+  margin-right: 1.5rem;
+  text-align: right;
+  color: gray;
+}
+code > [data-line][data-highlighted-line]::before {
+  border-left: 4px solid #57c7f9;
 }
