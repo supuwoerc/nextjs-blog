@@ -3,6 +3,7 @@ import {
   defineDocumentType,
   makeSource,
 } from 'contentlayer/source-files';
+import { format, parseISO } from 'date-fns';
 
 import { readingTime } from 'reading-time-estimator';
 import rehypeKatex from 'rehype-katex';
@@ -30,9 +31,28 @@ const computedFields: ComputedFields<'Post' | 'Page'> = {
     resolve: (doc) =>
       doc._raw.flattenedPath.split('/').slice(1).join('/').toLowerCase(),
   },
+  encodeURIComponentRet: {
+    type: 'string',
+    resolve: (doc) => {
+      const temp = doc._raw.flattenedPath.split('/').slice(1).join('/');
+      return encodeURIComponent(temp);
+    },
+  },
+  publishDate: {
+    type: 'string',
+    resolve: (doc) => {
+      return format(parseISO(doc.date), 'yyyy/MM/dd');
+    },
+  },
   readingTime: {
     type: 'json',
-    resolve: (doc) => readingTime(doc.body.raw, 200, 'cn'),
+    resolve: (doc) => {
+      const ret = readingTime(doc.body.raw, 120, 'cn');
+      return {
+        ...ret,
+        text: ret.text.replace(' ', ''),
+      };
+    },
   },
 };
 

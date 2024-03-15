@@ -2,7 +2,7 @@
 import classNames from 'classnames';
 import { Post } from 'contentlayer/generated';
 import { isUndefined } from 'lodash-es';
-import { Loader } from 'lucide-react';
+import { BookOpenCheck, Loader, Send } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -71,10 +71,24 @@ const Navigate: React.FC<NavigateProps> = ({ post }) => {
         </>
       ) : (
         <div className="prose dark:prose-invert">
-          <h2 className="pt-[20px]">{post.title}</h2>
-          {post.desc && (
-            <p className="text-slate-700 dark:text-slate-200">{post.desc}</p>
-          )}
+          <h2 className="mb-[10px] pt-[20px]">{post.title}</h2>
+          <div className="">
+            {post.desc && (
+              <p className="text-slate-700 dark:text-slate-200 my-0">
+                {`${post.desc}`}
+              </p>
+            )}
+            <p className="my-0 flex items-baseline text-[14px]">
+              <span className="mr-6 flex items-center">
+                <Send size={14} style={{ marginRight: 4 }} />
+                {post.publishDate}
+              </span>
+              <span className="flex items-center">
+                <BookOpenCheck size={14} style={{ marginRight: 4 }} />
+                {post.readingTime.text}
+              </span>
+            </p>
+          </div>
         </div>
       )}
     </div>

@@ -52,7 +52,7 @@ const PageLayout = ({ params }: { params: { slug: string[] } }) => {
         />
       </section>
       <div className="blur-text relative h-full w-full overflow-y-auto">
-        <div className="mx-auto max-w-xl">
+        <div className="mx-auto max-w-3xl">
           <div className="relative mx-auto">
             <article className="prose mx-auto py-4 text-black dark:prose-invert dark:text-white">
               <h2 className="pt-2 text-center">{page.title}</h2>

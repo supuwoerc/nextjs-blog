@@ -23,51 +23,23 @@ const config: Config = {
       catalogue: '30px',
     },
     extend: {
-      fontFamily: {
-        serif: [
-          'Iowan Old Style',
-          'Iowan',
-          'Iowan BT',
-          'Palatino Linotype',
-          'URW Palladio L',
-          'P052',
-          'serif',
-        ],
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-      },
+      // eslint-disable-next-line no-unused-vars
       typography: (theme: any) => ({
         DEFAULT: {
           css: {
             lineHeight: '2rem',
+            maxWidth: 'unset',
             a: {
-              textDecoration: 'none',
-              color: theme('colors.zinc.800'),
-              'font-weight': '600',
-              '&:hover': {
-                color: theme('colors.zinc.900'),
-                textDecoration: 'underline',
-              },
-            },
-            code: {
-              color: theme('colors.pink.500'),
-              paddingLeft: '4px',
-              paddingRight: '4px',
+              fontSize: 16,
+              padding: '0 2px',
+              margin: '0 6px',
+              'text-decoration': 'none',
+              '@apply realistic-marker-highlight': {},
             },
           },
         },
         invert: {
-          css: {
-            a: {
-              color: theme('colors.zinc.300'),
-              '&:hover': {
-                color: theme('colors.zinc.200'),
-              },
-            },
-          },
+          css: {},
         },
       }),
     },

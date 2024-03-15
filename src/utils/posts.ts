@@ -7,8 +7,9 @@ export function getPostFromParams(
   params: Record<string, any>
 ) {
   const slug = params?.slug?.join('/');
-  const post = allPosts.find((post) => post.slugAsParams === slug);
-
+  const post = allPosts.find((post) => {
+    return post.encodeURIComponentRet === slug;
+  });
   if (!post) {
     null;
   }
@@ -21,7 +22,7 @@ export function getPageFromParams(
   params: Record<string, any>
 ) {
   const slug = params?.slug?.join('/');
-  const page = allPages.find((post) => post.slugAsParams === slug);
+  const page = allPages.find((post) => post.encodeURIComponentRet === slug);
   if (!page) {
     null;
   }

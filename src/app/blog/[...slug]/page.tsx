@@ -52,13 +52,13 @@ const PostLayout = ({ params }: { params: { slug: string[] } }) => {
         />
       </section>
       <div className="blur-text relative h-full w-full overflow-y-auto">
-        <div className="mx-auto max-w-xl">
+        <div className="mx-auto max-w-3xl">
           <div className="bg-white dark:bg-black">
             <Navigate post={post} />
           </div>
           <div className="content">
             <div className="relative mx-auto">
-              <article className="prose mx-auto py-4 text-black dark:prose-invert dark:text-white">
+              <article className="prose py-4 text-black dark:prose-invert dark:text-white">
                 <MDXContent
                   components={{
                     pre: Pre,

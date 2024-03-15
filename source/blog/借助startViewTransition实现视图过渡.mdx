@@ -1,0 +1,66 @@
+---
+title: 借助startViewTransition实现视图过渡
+date: 2024-03-15
+desc: "学习Chrome v111版本后支持的动画过程API如何使用"
+top: true
+categories: ['前端']
+tag: ["css",'动画']
+---
+
+## 起因
+最近在用Next重构自己的博客，在做暗黑模式的时候联想起之前在托尼老师的博客[Antfu.me](https://antfu.me/)看到过他的视图过程动画，心里想着自己的网站也要这样的效果，于是前往Github打算看看是怎么实现的，具体代码在[logics/index.ts](https://github.com/antfu/antfu.me/blob/main/src/logics/index.ts#L10)，实际上，再后来的研究中，发现MDN上关于[关于使用JavaScript控制动画](https://developer.mozilla.org/zh-CN/docs/Web/API/View_Transitions_API#%E4%BD%BF%E7%94%A8_javascript_%E6%8E%A7%E5%88%B6%E5%8A%A8%E7%94%BB)中示例也是这个案例，总之，这个兼容性不是很好的API能为站点添色不少，下面我会按照代码来分析这个API
+
+```typescript showLineNumbers {4-42} title="SwitchTheme.tsx"  
+export default function SwitchTheme() {
+  const { theme, setTheme } = useTheme();
+  const isDarkMode = theme === 'dark';
+  const onClick = (event: MouseEvent<HTMLButtonElement>) => {
+    const isAppearanceTransition =
+      // @ts-expect-error experimental API
+      document.startViewTransition &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!isAppearanceTransition) {
+      setTheme(theme === 'dark' ? 'light' : 'dark');
+      return;
+    }
+    const { clientX: x, clientY: y } = event;
+    const largerRadius = Math.hypot(
+      Math.max(x, innerWidth - x),
+      Math.max(y, innerHeight - y)
+    );
+    const clipPath = [
+      `circle(0px at ${x}px ${y}px)`,
+      `circle(${largerRadius}px at ${x}px ${y}px)`,
+    ];
+    // @ts-expect-error
+    const transition = document.startViewTransition(() => {
+      setTheme(theme === 'dark' ? 'light' : 'dark');
+    });
+    transition.ready.then(() => {
+      document.documentElement.animate(
+        {
+          clipPath: !isDarkMode ? clipPath : [...clipPath].reverse(),
+        },
+        {
+          duration: 500,
+          easing: 'ease-in-out',
+          // 指定要附加动画的伪元素
+          pseudoElement: !isDarkMode
+            ? '::view-transition-new(root)'
+            : '::view-transition-old(root)',
+        }
+      );
+    });
+  };
+  const props = {
+    className: 'hover:cursor-pointer',
+    size: 18,
+  };
+  return (
+    <button className="p-1" onClick={onClick}>
+      {isDarkMode ? <Moon {...props} /> : <Sun {...props} />}
+    </button>
+  );
+}
+```
