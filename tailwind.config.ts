@@ -1,5 +1,18 @@
 import type { Config } from 'tailwindcss';
 
+const {
+  default: flattenColorPalette,
+} = require('tailwindcss/lib/util/flattenColorPalette');
+function addVariablesForColors({ addBase, theme }: any) {
+  let allColors = flattenColorPalette(theme('colors'));
+  let newVars = Object.fromEntries(
+    Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
+  );
+
+  addBase({
+    ':root': newVars,
+  });
+}
 const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -23,6 +36,21 @@ const config: Config = {
       catalogue: '30px',
     },
     extend: {
+      animation: {
+        spotlight: 'spotlight 2s ease .75s 1 forwards',
+      },
+      keyframes: {
+        spotlight: {
+          '0%': {
+            opacity: '0',
+            transform: 'translate(-72%, -62%) scale(0.5)',
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translate(-50%,-40%) scale(1)',
+          },
+        },
+      },
       // eslint-disable-next-line no-unused-vars
       typography: (theme: any) => ({
         DEFAULT: {
@@ -33,8 +61,7 @@ const config: Config = {
               fontSize: 16,
               padding: '0 2px',
               margin: '0 6px',
-              'text-decoration': 'none',
-              '@apply realistic-marker-highlight': {},
+              '@apply protrude': {},
             },
           },
         },
@@ -44,6 +71,10 @@ const config: Config = {
       }),
     },
   },
-  plugins: [require('@tailwindcss/typography'), require('tailwind-scrollbar')],
+  plugins: [
+    require('@tailwindcss/typography'),
+    require('tailwind-scrollbar'),
+    addVariablesForColors,
+  ],
 };
 export default config;

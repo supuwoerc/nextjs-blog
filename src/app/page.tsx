@@ -20,8 +20,8 @@ export default function Home() {
     <div className="blur-text border-red relative h-full w-full overflow-y-auto">
       <div className="mx-auto max-w-3xl">
         <div className="relative mx-auto">
-          <article className="prose mx-auto py-4 text-black dark:prose-invert dark:text-white">
-            Home
+          <article className="prose relative mx-auto py-4 text-black dark:prose-invert dark:text-white">
+            <h1>怎么个事？</h1>
           </article>
         </div>
       </div>

@@ -54,7 +54,7 @@ const PageLayout = ({ params }: { params: { slug: string[] } }) => {
       <div className="blur-text relative h-full w-full overflow-y-auto">
         <div className="mx-auto max-w-3xl">
           <div className="relative mx-auto">
-            <article className="prose mx-auto py-4 text-black dark:prose-invert dark:text-white">
+            <article className=":text-white prose mx-auto py-4 text-black dark:prose-invert">
               <h2 className="pt-2 text-center">{page.title}</h2>
               {page.desc && (
                 <p className="text-slate-700 dark:text-slate-200 mt-4">

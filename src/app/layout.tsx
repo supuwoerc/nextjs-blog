@@ -69,11 +69,11 @@ export default function RootLayout({
       >
         <ThemeModeProvider>
           <div className="blur-text relative h-full w-full overflow-y-auto px-[8px]">
-            <div className="mx-auto max-w-3xl">
-              <div className="sticky top-0 z-10 bg-white py-8 pb-4 dark:bg-black">
+            <div>
+              <div className="sticky top-0 z-10 bg-white px-[24px] py-[32px] pb-[24px] dark:bg-black">
                 <Navigate />
               </div>
-              <main>{children}</main>
+              <main className="mx-auto max-w-3xl">{children}</main>
             </div>
           </div>
         </ThemeModeProvider>

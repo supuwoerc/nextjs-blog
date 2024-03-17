@@ -36,6 +36,10 @@ const CopyButton: React.FC<CopyButtonProps> = ({
     ...toastConfig,
     theme: theme == 'light' ? 'dark' : 'light',
   };
+  const btnProps = {
+    size: 18,
+    color: theme == 'light' ? '#000' : '#fff',
+  };
   const copy = () => {
     if (!visible && navigator.clipboard && text) {
       navigator.clipboard
@@ -62,13 +66,13 @@ const CopyButton: React.FC<CopyButtonProps> = ({
     <Tippy visible={visible} placement="left" content={<span>Copied!</span>}>
       <button
         onClick={copy}
-        className="rounded px-1 py-1 hover:bg-[#444c56]"
+        className="rounded px-1 py-1 hover:bg-[#ddd] dark:hover:bg-[#444c56]"
         style={style}
       >
         {!visible ? (
-          <Copy size={18} />
+          <Copy {...btnProps} />
         ) : (
-          <Check size={18} color="var(--success)" />
+          <Check {...btnProps} color="var(--success)" />
         )}
       </button>
     </Tippy>

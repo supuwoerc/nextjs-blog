@@ -156,7 +156,10 @@ export default makeSource({
       [
         rehypePrettyCode,
         {
-          theme: 'material-theme-darker',
+          theme: {
+            light: 'material-theme-lighter',
+            dark: 'material-theme-ocean',
+          },
           keepBackground: true,
           defaultLang: 'typescript',
         },
