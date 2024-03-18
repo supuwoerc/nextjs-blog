@@ -1,27 +1,29 @@
-import { siteConfig } from '@/config';
-import { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: siteConfig.title,
-  description: siteConfig.description,
-  authors: siteConfig.author,
-  keywords: siteConfig.keywords,
-  metadataBase: new URL(siteConfig.author.url),
-  openGraph: {
-    title: siteConfig.title,
-    description: siteConfig.description,
-    url: siteConfig.author.url,
-    siteName: siteConfig.title,
-  },
-};
-
+'use client';
+import gsap from 'gsap';
+import TextPlugin from 'gsap/TextPlugin';
+import { useEffect, useRef } from 'react';
+gsap.registerPlugin(TextPlugin);
 export default function Home() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    let ctx = gsap.context(() => {
+      const tl = gsap.timeline();
+      tl.to('.title', {
+        duration: 1,
+        text: 'zhangqimeng.fun',
+      });
+    }, ref);
+    return () => ctx.revert();
+  }, []);
   return (
-    <div className="blur-text border-red relative h-full w-full overflow-y-auto">
-      <div className="mx-auto max-w-3xl">
+    <div
+      ref={ref}
+      className="blur-text border-red relative h-full w-full overflow-y-auto"
+    >
+      <div className="mx-auto max-w-2xl">
         <div className="relative mx-auto">
           <article className="prose relative mx-auto py-4 text-black dark:prose-invert dark:text-white">
-            <h1>怎么个事？</h1>
+            <h2 className="title"></h2>
           </article>
         </div>
       </div>

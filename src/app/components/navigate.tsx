@@ -1,6 +1,6 @@
 'use client';
 import classNames from 'classnames';
-import { Post } from 'contentlayer/generated';
+import { Page, Post } from 'contentlayer/generated';
 import { isUndefined } from 'lodash-es';
 import { BookOpenCheck, Loader, Send } from 'lucide-react';
 import Image from 'next/image';
@@ -14,7 +14,7 @@ const sizes = {
   height: 32,
 };
 export interface NavigateProps {
-  post?: Post;
+  post?: Post | Page;
 }
 const nav = [
   { path: '/', name: 'Home' },
