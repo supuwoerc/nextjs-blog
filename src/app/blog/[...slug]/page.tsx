@@ -58,7 +58,7 @@ const PostLayout = ({ params }: { params: { slug: string[] } }) => {
           </div>
           <div className="content">
             <div className="relative mx-auto">
-              <article className="prose py-4 text-black dark:prose-invert dark:text-white">
+              <article className="prose py-4 pb-[150px] text-black dark:prose-invert dark:text-white">
                 <MDXContent
                   components={{
                     pre: Pre,
