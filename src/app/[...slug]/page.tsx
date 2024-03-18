@@ -60,7 +60,7 @@ const PageLayout = ({ params }: { params: { slug: string[] } }) => {
           </div>
           <div className="content">
             <div className="relative mx-auto">
-              <article className="prose mx-auto py-4 pb-[150px] text-black text-white dark:prose-invert">
+              <article className="prose mx-auto py-4 pb-[150px] dark:prose-invert">
                 <MDXContent
                   components={{
                     pre: Pre,
