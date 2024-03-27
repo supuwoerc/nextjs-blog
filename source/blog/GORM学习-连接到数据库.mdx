@@ -1,0 +1,80 @@
+---
+title: GORM学习-连接到数据库
+date: 2023-02-24
+desc: "学习使用GORM连接到数据库"
+top: false
+categories: ['后端']
+tag: ["gorm",'后端',"数据库"]
+---
+
+## 支持的数据库
+GORM官方支持的数据库类型有：MySQL, PostgreSQL, SQLite, SQL Server 和 TiDB，这里简单介绍GORM连接到MySQL
+
+## 数据库DSN
+* 格式:[username[:password]@][protocol[(address)]]/dbname[?param1=value1&...&paramn=valuen]
+* 驱动参考:[dsn-data-source-name](https://github.com/go-sql-driver/mysql#dsn-data-source-name)
+
+## 相关配置
+
+```go
+&gorm.Config{
+		SkipDefaultTransaction: false, //跳过默认事务
+		NamingStrategy: schema.NamingStrategy{
+			TablePrefix:   "t_", //表名前缀
+			SingularTable: true, //单数表名
+		},
+		DisableForeignKeyConstraintWhenMigrating: true, //不建立物理外键
+		Logger: logger.New(
+			log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer（日志输出的目标，前缀和日志包含的内容——译者注）
+			logger.Config{
+				SlowThreshold:             time.Second, // 慢 SQL 阈值
+				LogLevel:                  logger.Info, // 日志级别
+				IgnoreRecordNotFoundError: true,        // 忽略ErrRecordNotFound（记录未找到）错误
+				Colorful:                  true,        // 禁用彩色打印
+			},
+)
+```
+
+## 代码示例
+
+```go showLineNumbers {3-28} title="main.go"  
+var DB *gorm.DB
+func init() {
+	username := "gorm_study" //账号
+	password := "password"   //密码
+	host := "127.0.0.1"      //地址
+	port := 3307             //端口
+	dbname := "gorm_study"   //数据库名
+	// 可能会遇到tcp连接的问题：https://github.com/Masterminds/glide/issues/999
+	connectString := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=true&loc=Local", username, password, host, port, dbname)
+	db, err := gorm.Open(mysql.New(mysql.Config{
+		DSN: connectString,
+	}), &gorm.Config{
+		SkipDefaultTransaction: false, //跳过默认事务
+		NamingStrategy: schema.NamingStrategy{
+			TablePrefix:   "t_", //表名前缀
+			SingularTable: true, //单数表名
+		},
+		DisableForeignKeyConstraintWhenMigrating: true, //不建立物理外键
+		Logger: logger.New(
+			log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer（日志输出的目标，前缀和日志包含的内容——译者注）
+			logger.Config{
+				SlowThreshold:             time.Second, // 慢 SQL 阈值
+				LogLevel:                  logger.Info, // 日志级别
+				IgnoreRecordNotFoundError: true,        // 忽略ErrRecordNotFound（记录未找到）错误
+				Colorful:                  true,        // 禁用彩色打印
+			},
+		),
+	})
+	if err != nil {
+		panic("数据库连接失败：" + err.Error())
+	} else {
+		fmt.Println("数据库连接成功")
+		sqlDb, _ := db.DB()
+		sqlDb.SetMaxIdleConns(10)               //设置连接池最大空闲连接数
+		sqlDb.SetMaxOpenConns(20)               //设置连接池最大连接数
+		sqlDb.SetConnMaxLifetime(1 * time.Hour) //设置连接最大生存周期
+		DB = db
+	}
+}
+```

@@ -87,9 +87,9 @@ const Pre: React.FC<React.PropsWithChildren<PreProps>> = (props) => {
   return (
     <pre
       {...props}
-      className="relative mt-0 overflow-hidden rounded-tl-none rounded-tr-none px-0 py-0"
+      className="custom-pre-code relative mt-0 overflow-hidden rounded-tl-none rounded-tr-none px-0 py-0"
     >
-      <div className="overflow-auto py-2 pt-3 scrollbar-thin">
+      <div className="code-container overflow-auto py-2 pt-3 scrollbar-thin">
         {props.children}
       </div>
       <CopyButton
