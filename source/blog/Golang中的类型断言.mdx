@@ -1,0 +1,187 @@
+---
+title: Golang中的类型断言
+date: 2022-09-27
+desc: "学习Golang中的类型断言的应用"
+top: false
+categories: ['后端']
+tag: ['后端',"golang"]
+---
+
+
+## 类型断言 
+Golang中经常会遇到`any`类型，也就是使用`interface{}`来约束变量，实现可以存储任意类型的数据，但是，这样的约束并不能反映出任何类型信息，我们需要通过断言来获取实际类型。
+
+常用断言的语法如下：`val,ok := x.(T)`，其中T是目标类型，val是转换后的值，ok表示这次断言成功与否，如果忽略ok的话断言失败时会引发panic。
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var value interface{} = "字符串"
+	val, ok := value.(string)
+	if ok {
+		fmt.Printf("断言成功，val：%s\n", val) // 断言成功，val：字符串
+	} else {
+		fmt.Println("断言失败")
+	}
+}
+```
+除了上面这种断言方法，还可以使用`switch & case`来断言，具体实现如下：
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var value interface{} = 100
+	switch val := value.(type) {
+	case string:
+		fmt.Printf("value值是%v，类型是%T", val, val)  // value值是100，类型是int
+	case int:
+		fmt.Printf("value值是%v，类型是%T", val, val)
+	}
+}
+```
+
+再看一个经典的接口实现的断言案例：
+```go
+package main
+
+import "fmt"
+
+type Color interface {
+	getColor() Color
+	setColor(value string, label string)
+}
+
+type Red struct {
+	Value string
+	Label string
+}
+
+func (r Red) getColor() Color {
+	return r
+}
+func (r Red) setColor(value string, label string) {
+	r.Value = value
+	r.Label = label
+}
+
+type Blue struct {
+	Value string
+	Label string
+}
+
+func (b *Blue) getColor() Color {
+	return b
+}
+func (b *Blue) setColor(value string, label string) {
+	b.Value = value
+	b.Label = label
+}
+
+func main() {
+	var red interface{} = Red{
+		Value: "red",
+		Label: "红色",
+	}
+	var red_p interface{} = &Red{
+		Value: "red",
+		Label: "红色",
+	}
+	var blue interface{} = Blue{
+		Value: "blue",
+		Label: "蓝色",
+	}
+	var blue_p interface{} = &Blue{
+		Value: "blue",
+		Label: "蓝色",
+	}
+	val_red, ok := red.(Color)
+	if ok {
+		fmt.Printf("red断言成功，类型：%T，颜色：%v\n", val_red, val_red.getColor())
+	} else {
+		fmt.Println("red断言Color失败")
+	}
+	val_red_p, ok := red_p.(Color)
+	if ok {
+		fmt.Printf("val_red_p断言成功，类型：%T，颜色：%v\n", val_red_p, val_red_p.getColor())
+	} else {
+		fmt.Println("val_red_p断言Color失败")
+	}
+	val_blue, ok := blue.(Color)
+	if ok {
+		fmt.Printf("blue断言成功，类型：%T，颜色：%v\n", val_blue, val_blue.getColor())
+	} else {
+		fmt.Println("blue断言Color失败")
+	}
+	val_blue_p, ok := blue_p.(Color)
+	if ok {
+		fmt.Printf("blue_p断言成功，类型：%T，颜色：%v\n", val_blue_p, val_blue_p.getColor())
+		val
+	} else {
+		fmt.Println("blue_p断言Color失败")
+	}
+}
+```
+上面这个案例输出结果为：
+```shell
+red断言成功，类型：main.Red，颜色：{red 红色}
+val_red_p断言成功，类型：*main.Red，颜色：{red 红色}
+blue断言Color失败
+blue_p断言成功，类型：*main.Blue，颜色：&{blue 蓝色}
+```
+可以得出以下结论：
+* 如果接口的所有方法都是以值接收者定义的，那么不仅结构体实例可以实现这个接口，结构体指针同样也实现了这个接口。 
+* 如果接口的至少一个方法是以指针接收者定义的，那么只有结构体指针可以实现这个接口。
+
+编译器在编译前就会提示开发者Blue没有实现接口Color，此外Goland这类的IDE会直接通过图标来展示接口的实现情况
+```go
+var _ Color = Red{}
+var _ Color = &Red{}
+var _ Color = Blue{}   // 编译器警告Blue没有实现接口Color
+var _ Color = &Blue{}
+```
+ 再次借助`switch & case`来断言接口实现情况，注意，这里不能使用`fallthrough`
+```go
+func main() {
+	var red interface{} = Red{
+		Value: "red",
+		Label: "红色",
+	}
+	// 将Color放在Red之前
+	switch red.(type) {
+	case Color:
+		fmt.Println("color")
+	case Red:
+		fmt.Println("red")
+	case *Red:
+		fmt.Println("*red")
+	}
+	// 将Color放在Red之后
+	switch red.(type) {
+	case Red:
+		fmt.Println("red")
+	case Color:
+		fmt.Println("color")
+	case *Red:
+		fmt.Println("*red")
+	}
+	// 单独验证
+	switch red.(type) {
+	default:
+		fmt.Println("不是*red")
+	case *Red:
+		fmt.Println("*red")
+	}
+}
+ ```
+ 输出结果证明了实现接口的结构体的多态性，符合之前的结论：
+ ```shell
+color
+red
+不是*red
+ ```
