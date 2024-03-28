@@ -1,10 +1,10 @@
-import { layerConfig } from "@/config";
-import classNames from "classnames";
-import { Post, allPosts } from "contentlayer/generated";
-import { compareDesc, format, parseISO, startOfMonth } from "date-fns";
-import { zhCN } from "date-fns/locale";
-import { groupBy } from "lodash-es";
-import Link from "next/link";
+import { layerConfig } from '@/config';
+import classNames from 'classnames';
+import { Post, allPosts } from 'contentlayer/generated';
+import { compareDesc, format, parseISO, startOfMonth } from 'date-fns';
+import { zhCN } from 'date-fns/locale';
+import { groupBy } from 'lodash-es';
+import Link from 'next/link';
 
 export interface PostCardProps {
   post: Post;
@@ -15,16 +15,16 @@ export function PostCard({ post, isTop }: PostCardProps) {
     <Link
       href={post.url}
       className={classNames(
-        "flex justify-between items-center",
-        "text-catalogue leading-catalogue  transition-colors duration-300 dark:text-white ",
-        "text-[clamp(14px,2vw,16px)]",
+        'flex items-center justify-between',
+        'leading-catalogue text-catalogue  transition-colors duration-300 dark:text-white ',
+        'text-[clamp(14px,2vw,16px)]',
         {
-          "hover:text-catalogue-hover": !isTop,
+          'hover:text-catalogue-hover': !isTop,
         }
       )}
     >
       <p
-        className={classNames("max-w-[50%] truncate", {
+        className={classNames('max-w-[50%] truncate', {
           protrude: isTop,
           italic: isTop,
         })}
@@ -32,22 +32,24 @@ export function PostCard({ post, isTop }: PostCardProps) {
       >
         {post.title}
       </p>
-      <hr className="border-dotted border-catalogue-line opacity-[0.25] flex-1 mx-[8px]  dark:border-d-catalogue-line" />
-      <time dateTime={post.date}>{format(parseISO(post.date), "MM.dd")}</time>
+      <hr className="mx-[8px] flex-1 border-dotted border-catalogue-line opacity-[0.25]  dark:border-d-catalogue-line" />
+      <time dateTime={post.date}>{format(parseISO(post.date), 'MM.dd')}</time>
     </Link>
   );
 }
 export interface PostGroup {
   year: string;
+  showYear: boolean;
+  showMonth: boolean;
   month: string;
   posts: Post[];
 }
 export function PostGroupCard(group: PostGroup) {
   return (
     <div className="post-group">
-      <div className="flex items-center justify-between font-bold mb-[4px] mx-0  text-[clamp(16px,1.8vw,24px)]">
-        <span>{group.year}</span>
-        <span>{group.month}</span>
+      <div className="mx-0 mb-[8px] flex items-baseline justify-between text-[clamp(16px,1.8vw,24px)]  font-bold">
+        <span>{group.showYear ? group.year : ''}</span>
+        <span className="text-[16px]">{group.month}</span>
       </div>
       {group.posts.length > 0
         ? group.posts.map((post, index) => {
@@ -63,18 +65,24 @@ export default function Catalogue() {
     return startOfMonth(parseISO(item.date)).getTime();
   });
   const keysSortRet = Object.keys(groupRet).sort((a, b) => {
-    return Number(a) - Number(b);
+    return Number(b) - Number(a);
   });
+  const yearRecord: Record<string, boolean> = {};
   const getGroupInfo = (key: string) => {
     const val = groupRet[key];
     const date = new Date(Number(key));
-    return {
-      year: format(date, "yyyy", { locale: zhCN }),
-      month: format(date, "LLLL", { locale: zhCN }),
+    const year = format(date, 'yyyy', { locale: zhCN });
+    const ret: PostGroup = {
+      year,
+      month: format(date, 'LLLL', { locale: zhCN }),
+      showYear: !(yearRecord[year] ?? false),
+      showMonth: val.length > 1,
       posts: val.sort((a, b) =>
         compareDesc(new Date(a.date), new Date(b.date))
       ),
     };
+    yearRecord[year] = true;
+    return ret;
   };
   return (
     <div className="blog-roll">

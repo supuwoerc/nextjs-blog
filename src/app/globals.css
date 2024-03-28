@@ -58,7 +58,7 @@ a {
 
 .post-group {
   + .post-group {
-    margin-top: 20px;
+    margin-top: 32px;
   }
 }
 @keyframes tick {
