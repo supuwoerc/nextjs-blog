@@ -1,0 +1,102 @@
+---
+title: Golang中的反射
+date: 2022-10-01
+desc: "学习Golang中的反射的应用"
+top: false
+categories: ['后端']
+tag: ['后端',"golang"]
+---
+
+
+## wiki百科中反射的定义
+> 在计算机科学中，反射是指计算机程序在运行时（runtime）可以访问、检测和修改它本身状态或行为的一种能力。用比喻来说，反射就是程序在运行的时候能够“观察”并且修改自己的行为。
+
+## 反射的特点
+* 代码执行效率低，反射性能比一般的代码慢一到两个数量级，根本原因是未指定类型的变量去执行行为的时候需要查找并匹配对应类型，可能需要分配相关内存，之后还需要类型转换和相关方法调用
+* 代码可读性差，开发者不易维护，不严谨的代码编写容易触发panic
+
+## 变量组成
+在说反射之前，我们需要先了解Go中变量的核心组成，这里直接说结论：Go中变量核心可以分为两部分，分别是Type和Value。
+
+其中Type是用于指定变量的类型，这里面又分为静态类型`static type`和
+动态类型`concrete type`，简单的说，静态类型是指变量声明时候的类型，而动态类型是指运行时的具体类型。
+
+举例说明：
+```go
+func main() {
+	var count interface{} = 10     // 声明：静态类型：interface{}  赋值：动态类型int
+	count = "字符串"				// 赋值：动态类型string
+	fmt.Println(count)
+}
+```
+注意，动态类型是运行到对应语句的时候才发生了变化，是否是runtime一定要区分清楚。
+
+说完Type之后我们再说一下Value，Value的作用是记录变量真实的值，就是这么简单，当然Value既可以用于获取，也可以用于修改原始数据。
+
+## reflcet下的方法
+下面介绍`reflect`包下常用的方法和作用：
+- Typeof方法：用于获取变量Type的方法，这个函数返回一个reflect.Type对象，它代表变量的确切类型。这包括变量的类型名称、是否为指针类型、是否实现了某接口等详细信息。 
+```go
+func main() {
+	var count interface{} = 10
+	fmt.Println(reflect.TypeOf(count)) // int
+	count = "字符串"
+	fmt.Println(reflect.TypeOf(count)) // string
+	var user UserDomain
+	fmt.Println(reflect.TypeOf(user))  // main.UserDomain
+	fmt.Println(reflect.TypeOf(&user)) // *main.UserDomain
+}
+```
+上面介绍的方法`reflect.TypeOf`的返回值是`reflect.Type`，这个对象也具备相关的一些重要方法，下面用代码解释`Kind`这个方法：
+```go
+func main() {
+	var count interface{} = 10
+	fmt.Println(reflect.TypeOf(count))        // int
+	fmt.Println(reflect.TypeOf(count).Kind()) // int
+	count = "字符串"
+	fmt.Println(reflect.TypeOf(count))        // string
+	fmt.Println(reflect.TypeOf(count).Kind()) // string
+	var user UserDomain
+	fmt.Println(reflect.TypeOf(user))         // main.UserDomain
+	fmt.Println(reflect.TypeOf(user).Kind())  // struct
+	fmt.Println(reflect.TypeOf(&user))        // *main.UserDomain
+	fmt.Println(reflect.TypeOf(&user).Kind()) // ptr
+}
+```
+从代码运行结果来看，Kind方法是用于获取`reflect.Kind`的，这个`reflect.Kind`是用来描述对象的底层类型的，例如：整型、浮点型、复数、字符串、结构体、指针、接口等。
+
+除了`Kind`方法，另外一个方法`Elem`也顺便做一下说明：Elem方法适用于处理指针、数组、切片、映射（map）、通道（chan）、以及接口类型的变量。简而言之，Elem 方法用于获取这些复合类型的基本元素类型。
+
+例如下面示例中13和14行输出结果是一致的，因为reflect.TypeOf(user)的结果就是main.User，再对它调用Kind方法的到的自然就是struct，而13行中reflect.TypeOf(&user).Elem()是获取指针中存放的元素的Type，所以返回的也是main.User，再之后就是一样的获取main.User的基础类型Kind了。
+```go {13-14}
+func main() {
+	var count interface{} = 10
+	fmt.Println(reflect.TypeOf(count)) // int
+	//fmt.Println(reflect.TypeOf(count).Elem())  // 发生panic
+	count = "字符串"
+	fmt.Println(reflect.TypeOf(count)) //string
+	//fmt.Println(reflect.TypeOf(count).Elem()) // 发生panic
+	var user UserDomain
+	fmt.Println(reflect.TypeOf(user)) //main.UserDomain
+	//fmt.Println(reflect.TypeOf(user).Elem()) // 发生panic
+	fmt.Println(reflect.TypeOf(&user))               //*main.UserDomain
+	fmt.Println(reflect.TypeOf(&user).Elem())        // main.UserDomain
+	fmt.Println(reflect.TypeOf(&user).Elem().Kind()) // struct
+	fmt.Println(reflect.TypeOf(user).Kind())         // struct
+}
+```
+再换一个例子验证Elem的作用：
+```go
+func main() {
+	var user UserDomain
+	var userChanel chan UserDomain
+	fmt.Println(reflect.TypeOf(user))                    // main.UserDomain
+	fmt.Println(reflect.TypeOf(&UserDomain{}).Elem())    // main.UserDomain
+	fmt.Println(reflect.TypeOf(&[]UserDomain{}).Elem())  // []main.UserDomain
+	fmt.Println(reflect.TypeOf(&[2]UserDomain{}).Elem()) // [2]main.UserDomain
+	fmt.Println(reflect.TypeOf(userChanel))              // chan main.UserDomain
+	fmt.Println(reflect.TypeOf(&userChanel))             // *chan main.UserDomain
+	fmt.Println(reflect.TypeOf(userChanel).Elem())       //  main.UserDomain
+	fmt.Println(reflect.TypeOf(&userChanel).Elem())      // chan main.UserDomain
+}
+```
